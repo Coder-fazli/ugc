@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #000;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+}
+
+::selection {
+  background: #6d18ff;
+  color: #fff;
+}
+
+@keyframes ugcmarq {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes ugcup {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ugcdrift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(30px, -16px) rotate(12deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes ugcdrift2 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-26px, 12px) rotate(-14deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+input::placeholder { color: #9a988f; }
+select:invalid { color: #9a988f; }
+
+/* hover / focus behaviour (these replaced the original style-hover attributes) */
+.ugc-panel { transition: flex 0.55s cubic-bezier(0.2, 0.85, 0.2, 1); }
+.ugc-panel:hover { flex: 1.22; }
+
+.ugc-cta { transition: transform 0.2s, box-shadow 0.2s; }
+.ugc-cta:hover { transform: translate(-2px, -2px); }
+
+.ugc-input { transition: border-color 0.15s; }
+.ugc-input:focus { border-color: #6d18ff; }
+
+.ugc-back:hover { color: #b1e005; }
+
+.ugc-submit { transition: transform 0.18s, box-shadow 0.18s, background 0.18s; }
+.ugc-submit:hover:not(:disabled) {
+  background: #6d18ff;
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 #b1e005;
+}
+
+.ugc-soc { transition: all 0.18s; }
+.ugc-soc:hover { transform: translateY(-3px); }
+.ugc-soc-in:hover { background: #6d18ff; border-color: #6d18ff; }
+.ugc-soc-ig:hover { background: #b1e005; border-color: #b1e005; color: #000; }
+.ugc-soc-tt:hover { background: #f4e809; border-color: #f4e809; color: #000; }
+
+@media (max-width: 768px) {
+  .ugc-marq { font-size: 11px !important; letter-spacing: 0.12em !important; padding: 0 16px !important; }
+  .ugc-split { flex-direction: column !important; }
+  .ugc-panel { flex: 1 1 0 !important; min-height: 0 !important; }
+  .ugc-pc { top: 7% !important; bottom: 7% !important; padding-left: 8vw !important; padding-right: 8vw !important; }
+  .ugc-pc h2 { font-size: 30px !important; line-height: 1 !important; min-height: 0 !important; }
+  .ugc-pc p { font-size: 14px !important; max-width: 34ch !important; }
+  .ugc-pc .ugc-cta { padding: 13px 20px !important; font-size: 14px !important; }
+  .ugc-pc .ugc-kick { font-size: 12px !important; padding: 6px 11px !important; }
+  .ugc-fh1 { font-size: 34px !important; }
+  .ugc-formwrap { padding: 28px 18px 64px !important; }
+  .ugc-form { padding: 20px !important; box-shadow: 6px 6px 0 #6d18ff !important; }
+  .ugc-grid2 { grid-template-columns: 1fr !important; }
+}
