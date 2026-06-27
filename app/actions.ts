@@ -18,8 +18,15 @@ const HEADERS = [
 export type SubmitResult = { ok: boolean; error?: string };
 
 function getSheetsClient() {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const key = process.env.GOOGLE_PRIVATE_KEY;
+
+  // Prefer inline env-var credentials (works on any host, e.g. Hostinger /
+  // Vercel). Fall back to a local key file for development.
   const auth = new google.auth.GoogleAuth({
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    ...(email && key
+      ? { credentials: { client_email: email, private_key: key.replace(/\\n/g, "\n") } }
+      : { keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS }),
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
   return google.sheets({ version: "v4", auth });

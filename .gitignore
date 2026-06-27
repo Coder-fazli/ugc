@@ -21,3 +21,6 @@ npm-debug.log*
 
 # build info
 *.tsbuildinfo
+
+# host env var copy-paste sheet (secret)
+HOST_ENV_VARS.txt
