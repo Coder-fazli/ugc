@@ -82,14 +82,18 @@ export async function POST(request: Request) {
     const meta = await sheets.spreadsheets.get({ spreadsheetId });
     const tab = meta.data.sheets?.[0]?.properties?.title ?? "Sheet1";
 
+    // Ensure the header row always matches HEADERS (self-heals if columns change).
     const firstRow = await sheets.spreadsheets.values.get({
       spreadsheetId,
       range: `${tab}!A1:J1`,
     });
-    if (!firstRow.data.values || firstRow.data.values.length === 0) {
+    const current = firstRow.data.values?.[0] ?? [];
+    const headerMatches =
+      current.length === HEADERS.length && HEADERS.every((h, i) => current[i] === h);
+    if (!headerMatches) {
       await sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `${tab}!A1`,
+        range: `${tab}!A1:J1`,
         valueInputOption: "RAW",
         requestBody: { values: [HEADERS] },
       });
