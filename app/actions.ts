@@ -18,19 +18,31 @@ const HEADERS = [
 export type SubmitResult = { ok: boolean; error?: string };
 
 function getPrivateKey(): string | undefined {
-  // base64 form is safest — no newlines/backslashes for a host to mangle.
-  const b64 = process.env.GOOGLE_PRIVATE_KEY_BASE64;
-  if (b64) return Buffer.from(b64, "base64").toString("utf8");
-
-  let key = process.env.GOOGLE_PRIVATE_KEY;
+  // Accept the key from either env var, in base64 or raw PEM form. This is
+  // forgiving on purpose so it works regardless of how the host stored it.
+  let key = process.env.GOOGLE_PRIVATE_KEY_BASE64 || process.env.GOOGLE_PRIVATE_KEY;
   if (!key) return undefined;
+
   key = key.trim();
+  // strip stray surrounding quotes
   if (
     (key.startsWith('"') && key.endsWith('"')) ||
     (key.startsWith("'") && key.endsWith("'"))
   ) {
-    key = key.slice(1, -1);
+    key = key.slice(1, -1).trim();
   }
+
+  // If it's not already PEM, assume base64 and decode it.
+  if (!key.includes("-----BEGIN")) {
+    try {
+      const decoded = Buffer.from(key, "base64").toString("utf8");
+      if (decoded.includes("-----BEGIN")) return decoded;
+    } catch {
+      /* fall through */
+    }
+  }
+
+  // Raw PEM (possibly with escaped newlines).
   return key.replace(/\\n/g, "\n");
 }
 
