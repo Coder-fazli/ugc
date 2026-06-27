@@ -98,7 +98,16 @@ export async function submitCreator(formData: FormData): Promise<SubmitResult> {
 
     return { ok: true };
   } catch (err) {
-    console.error("submitCreator failed:", err instanceof Error ? err.message : err);
-    return { ok: false, error: "Göndərilmədi. Bir az sonra yenidən cəhd edin." };
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("submitCreator failed:", msg);
+    // TEMP DEBUG: surface the real reason so we can diagnose on the host.
+    const mode =
+      process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
+        ? "inline"
+        : process.env.GOOGLE_APPLICATION_CREDENTIALS
+          ? "keyfile"
+          : "none";
+    const sheet = process.env.GOOGLE_SHEET_ID ? "yes" : "no";
+    return { ok: false, error: `Göndərilmədi. [dbg mode=${mode} sheet=${sheet}] ${msg}` };
   }
 }
