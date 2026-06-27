@@ -17,15 +17,32 @@ const HEADERS = [
 
 export type SubmitResult = { ok: boolean; error?: string };
 
+function getPrivateKey(): string | undefined {
+  // base64 form is safest — no newlines/backslashes for a host to mangle.
+  const b64 = process.env.GOOGLE_PRIVATE_KEY_BASE64;
+  if (b64) return Buffer.from(b64, "base64").toString("utf8");
+
+  let key = process.env.GOOGLE_PRIVATE_KEY;
+  if (!key) return undefined;
+  key = key.trim();
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1);
+  }
+  return key.replace(/\\n/g, "\n");
+}
+
 function getSheetsClient() {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const key = process.env.GOOGLE_PRIVATE_KEY;
+  const key = getPrivateKey();
 
   // Prefer inline env-var credentials (works on any host, e.g. Hostinger /
   // Vercel). Fall back to a local key file for development.
   const auth = new google.auth.GoogleAuth({
     ...(email && key
-      ? { credentials: { client_email: email, private_key: key.replace(/\\n/g, "\n") } }
+      ? { credentials: { client_email: email, private_key: key } }
       : { keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS }),
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
