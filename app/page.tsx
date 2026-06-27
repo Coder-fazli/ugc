@@ -55,6 +55,7 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasWhatsapp, setHasWhatsapp] = useState(true);
 
   const goCreator = () => {
     setScreen("creator");
@@ -95,7 +96,8 @@ export default function Home() {
   // ---------------- HOME SCREEN ----------------
   if (screen === "home") {
     return (
-      <div style={css("height:100vh;width:100%;display:flex;flex-direction:column;background:#000;overflow:hidden;")}>
+      <>
+      <div className="ugc-home home-desktop" style={css("height:100vh;width:100%;display:flex;flex-direction:column;background:#000;overflow:hidden;")}>
         {/* top kinetic marquee */}
         <div style={css("height:48px;flex:none;background:#000;border-bottom:2px solid #1a1a1a;overflow:hidden;display:flex;align-items:center;white-space:nowrap;position:relative;z-index:5;")}>
           <div style={css("display:inline-flex;align-items:center;animation:ugcmarq 26s linear infinite;will-change:transform;")}>
@@ -156,9 +158,7 @@ export default function Home() {
 
           {/* center logo wordmark */}
           <div className="ugc-logo-c" onClick={goHome} style={css("position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;pointer-events:auto;cursor:pointer;display:flex;align-items:center;justify-content:center;")}>
-            <div style={css("background:#0a0a0a;color:#fff;font-weight:900;font-size:clamp(30px,4vw,48px);letter-spacing:-.04em;padding:clamp(12px,1.6vw,18px) clamp(20px,2.6vw,30px);border-radius:16px;box-shadow:4px 4px 0 rgba(0,0,0,.35);")}>
-              UGC
-            </div>
+            <img src="/ugc-logo.png" alt="UGC" style={css("width:clamp(150px,18vw,260px);height:auto;display:block;filter:drop-shadow(0 8px 20px rgba(0,0,0,.45));")} />
           </div>
         </div>
 
@@ -171,7 +171,7 @@ export default function Home() {
             <a href="https://www.linkedin.com/company/ugc-az" target="_blank" rel="noopener" aria-label="LinkedIn" className="ugc-soc ugc-soc-in" style={css("width:40px;height:40px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
               <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.3c0-1.26-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9z" /></svg>
             </a>
-            <a href="https://www.instagram.com/ugc.az" target="_blank" rel="noopener" aria-label="Instagram" className="ugc-soc ugc-soc-ig" style={css("width:40px;height:40px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
+            <a href="https://www.instagram.com/ugc.azerbaijan" target="_blank" rel="noopener" aria-label="Instagram" className="ugc-soc ugc-soc-ig" style={css("width:40px;height:40px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" stroke="none" /></svg>
             </a>
             <a href="https://www.tiktok.com/@ugc.az" target="_blank" rel="noopener" aria-label="TikTok" className="ugc-soc ugc-soc-tt" style={css("width:40px;height:40px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
@@ -180,10 +180,82 @@ export default function Home() {
           </div>
           <div style={css("display:inline-flex;align-items:center;gap:9px;margin-top:4px;opacity:.85;")}>
             <span style={css("font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#5a5a5a;")}>Powered by</span>
-            <span style={css("font-size:12px;font-weight:800;letter-spacing:.04em;color:#9a9a9a;")}>LVETICA</span>
+            <img src="/lvetica.png" alt="Lvetica" style={css("height:15px;width:auto;display:block;")} />
           </div>
         </div>
       </div>
+
+      {/* ============ MOBILE HOME (matches the mobile preview design) ============ */}
+      <div className="home-mobile" style={css("min-height:100dvh;width:100%;overflow-x:hidden;display:flex;flex-direction:column;background:#000;")}>
+        {/* marquee */}
+        <div style={css("height:40px;flex:none;background:#000;border-bottom:2px solid #1a1a1a;overflow:hidden;display:flex;align-items:center;white-space:nowrap;position:relative;z-index:3;")}>
+          <div style={css("display:inline-flex;align-items:center;animation:ugcmarq 22s linear infinite;")}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i} style={{ display: "contents" }}>
+                <span style={css(`font-size:11px;font-weight:800;letter-spacing:.12em;color:${TEXT_COLORS[i % 4]};padding:0 16px;`)}>{MARQ_TEXT}</span>
+                <span style={css(`color:${DOT_COLORS[i % 4]};font-size:11px;`)}>●</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* vertical split */}
+        <div style={css("flex:1;display:flex;flex-direction:column;min-height:0;position:relative;")}>
+          {/* green creator */}
+          <div style={css("flex:1;position:relative;overflow:hidden;background:#b1e005;color:#0a0a0a;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:22px 50px 22px 26px;")}>
+            <div style={css("position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#b1e005;line-height:1;text-transform:uppercase;z-index:2;background:#0a0a0a;padding:12px 6px;")}>
+              {"KREATORLAR".split("").map((c, i) => (<span key={i}>{c}</span>))}
+              <i style={css("height:8px;")} />
+              {"ÜÇÜN".split("").map((c, i) => (<span key={`k${i}`}>{c}</span>))}
+            </div>
+            <div onClick={goCreator} style={css("position:relative;z-index:1;display:flex;flex-direction:column;gap:14px;align-items:flex-start;cursor:pointer;")}>
+              <h2 style={css("font-size:min(12vw,46px);line-height:.9;font-weight:800;letter-spacing:-.025em;text-transform:uppercase;")}>UGC<br />OLMAQ<br />İSTƏYİRƏM</h2>
+              <p style={css("opacity:.82;font-size:13.5px;font-weight:500;line-height:1.4;max-width:26ch;")}>Profilini yarat, brendlərlə işlə və məzmununla qazan.</p>
+              <span style={css("display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:800;padding:13px 20px;background:#0a0a0a;color:#fff;box-shadow:4px 4px 0 rgba(0,0,0,.25);")}>Müraciət et<span style={css("font-size:18px;")}>→</span></span>
+            </div>
+          </div>
+
+          {/* purple brand */}
+          <div style={css("flex:1;position:relative;overflow:hidden;background:#6d18ff;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;text-align:right;padding:22px 26px 22px 50px;")}>
+            <div style={css("position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#0a0a0a;line-height:1;text-transform:uppercase;z-index:2;background:#f4e809;padding:12px 6px;")}>
+              {"BRENDLƏR".split("").map((c, i) => (<span key={i}>{c}</span>))}
+              <i style={css("height:8px;")} />
+              {"ÜÇÜN".split("").map((c, i) => (<span key={`b${i}`}>{c}</span>))}
+            </div>
+            <a href={mailHref} target="_blank" rel="noopener" style={css("position:relative;z-index:1;display:flex;flex-direction:column;gap:14px;align-items:flex-end;text-decoration:none;color:#fff;")}>
+              <h2 style={css("font-size:min(12vw,46px);line-height:.9;font-weight:800;letter-spacing:-.025em;text-transform:uppercase;")}>MARKAMA<br />UGC<br />AXTARIRAM</h2>
+              <p style={css("opacity:.85;font-size:13.5px;font-weight:500;line-height:1.4;max-width:26ch;")}>Bizə yaz, kampaniyan üçün doğru kreatoru tapaq.</p>
+              <span style={css("display:inline-flex;align-items:center;gap:11px;font-size:14px;font-weight:800;padding:13px 20px;background:#f4e809;color:#0a0a0a;box-shadow:4px 4px 0 rgba(0,0,0,.35);")}>Bizə yazın<span style={css("font-size:18px;")}>→</span></span>
+            </a>
+          </div>
+
+          {/* center logo on the seam */}
+          <div style={css("position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;pointer-events:none;")}>
+            <img src="/ugc-logo.png" alt="UGC" style={css("width:82px;height:auto;display:block;filter:drop-shadow(0 6px 16px rgba(0,0,0,.4));")} />
+          </div>
+        </div>
+
+        {/* footer */}
+        <div style={css("flex:none;background:#000;border-top:2px solid #1a1a1a;padding:16px 20px 22px;display:flex;flex-direction:column;align-items:center;gap:11px;")}>
+          <div style={css("font-size:11px;font-weight:600;letter-spacing:.03em;color:#8a8a8a;")}>Bütün hüquqlar qorunur © 2026</div>
+          <div style={css("display:flex;gap:10px;")}>
+            <a href="https://www.linkedin.com/company/ugc-az" target="_blank" rel="noopener" aria-label="LinkedIn" style={css("width:36px;height:36px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.3c0-1.26-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9z" /></svg>
+            </a>
+            <a href="https://www.instagram.com/ugc.azerbaijan" target="_blank" rel="noopener" aria-label="Instagram" style={css("width:36px;height:36px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" stroke="none" /></svg>
+            </a>
+            <a href="https://www.tiktok.com/@ugc.az" target="_blank" rel="noopener" aria-label="TikTok" style={css("width:36px;height:36px;border-radius:50%;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;color:#fff;")}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.8V9c-1.4.1-2.7-.3-3.7-1v6.7c0 3.4-2.8 5.8-5.9 5.3-2.6-.4-4.3-2.9-3.8-5.5.4-2.2 2.4-3.8 4.7-3.6v2.5c-.3-.1-.7-.2-1-.1-1.3.1-2.2 1.3-2 2.6.2 1.2 1.4 2 2.6 1.7 1-.2 1.7-1.1 1.7-2.2V3z" /></svg>
+            </a>
+          </div>
+          <a href="https://lvetica.co" target="_blank" rel="noopener" style={css("display:inline-flex;align-items:center;gap:8px;opacity:.85;text-decoration:none;")}>
+            <span style={css("font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#5a5a5a;")}>Powered by</span>
+            <img src="/lvetica.png" alt="Lvetica" style={css("height:13px;width:auto;display:block;")} />
+          </a>
+        </div>
+      </div>
+      </>
     );
   }
 
@@ -291,10 +363,24 @@ export default function Home() {
                 </div>
               </div>
 
-              <div style={css("margin-bottom:22px;")}>
+              <div style={css("margin-bottom:14px;")}>
                 <label style={css(LABEL)}>Telefon nömrəsi</label>
                 <input name="telefon" type="tel" required placeholder="+994 50 000 00 00" className="ugc-input" style={css(FIELD)} />
               </div>
+
+              <div style={css("margin-bottom:" + (hasWhatsapp ? "32px" : "22px") + ";display:flex;align-items:center;gap:10px;")}>
+                <input id="haswa" name="has_whatsapp" type="checkbox" checked={hasWhatsapp} onChange={(e) => setHasWhatsapp(e.target.checked)} style={css("width:20px;height:20px;accent-color:#6d18ff;cursor:pointer;flex:none;")} />
+                <label htmlFor="haswa" style={css("font-size:14px;font-weight:600;color:#333;cursor:pointer;")}>
+                  Bu nömrənin WhatsApp-ı var
+                </label>
+              </div>
+
+              {!hasWhatsapp && (
+                <div style={css("margin-bottom:32px;animation:ugcup .35s ease both;")}>
+                  <label style={css(LABEL)}>WhatsApp nömrəsi</label>
+                  <input name="whatsapp" type="tel" required placeholder="+994 50 000 00 00" className="ugc-input" style={css(FIELD)} />
+                </div>
+              )}
 
               <div style={css("margin-bottom:32px;")}>
                 <label style={css(LABEL)}>E-poçt</label>

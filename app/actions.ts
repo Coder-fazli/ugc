@@ -11,6 +11,7 @@ const HEADERS = [
   "Instagram",
   "TikTok",
   "Telefon",
+  "WhatsApp",
   "Email",
 ];
 
@@ -30,6 +31,11 @@ export async function submitCreator(formData: FormData): Promise<SubmitResult> {
   const ad = get("ad");
   const telefon = get("telefon");
   const email = get("email");
+
+  // If the "this number has WhatsApp" box is checked, the checkbox is present
+  // and WhatsApp == the phone number. Otherwise use the separate field.
+  const sameWhatsapp = formData.get("has_whatsapp") !== null;
+  const whatsapp = sameWhatsapp ? telefon : get("whatsapp");
 
   // Minimal server-side validation (the browser also enforces `required`).
   if (!ad || !telefon || !email) {
@@ -51,7 +57,7 @@ export async function submitCreator(formData: FormData): Promise<SubmitResult> {
     // Write a header row once, if the sheet is empty.
     const firstRow = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: `${tab}!A1:I1`,
+      range: `${tab}!A1:J1`,
     });
     if (!firstRow.data.values || firstRow.data.values.length === 0) {
       await sheets.spreadsheets.values.update({
@@ -71,12 +77,13 @@ export async function submitCreator(formData: FormData): Promise<SubmitResult> {
       get("ig"),
       get("tt"),
       telefon,
+      whatsapp,
       email,
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${tab}!A:I`,
+      range: `${tab}!A:J`,
       valueInputOption: "USER_ENTERED",
       insertDataOption: "INSERT_ROWS",
       requestBody: { values: [row] },

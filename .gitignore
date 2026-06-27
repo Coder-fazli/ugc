@@ -18,3 +18,6 @@ ugcaz-499610-bd57fb25dfb8.json
 .DS_Store
 *.pem
 npm-debug.log*
+
+# build info
+*.tsbuildinfo
