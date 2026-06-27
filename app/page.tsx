@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { CSSProperties, FormEvent } from "react";
-import { submitCreator } from "./actions";
 
 /**
  * Tiny helper: turns a plain CSS string ("color:red;font-size:14px;")
@@ -76,16 +75,16 @@ export default function Home() {
     setError(null);
     try {
       const fd = new FormData(e.currentTarget);
-      const res = await submitCreator(fd);
-      if (res.ok) {
+      const res = await fetch("/api/submit", { method: "POST", body: fd });
+      const data = await res.json().catch(() => ({ ok: false, error: "Server xətası." }));
+      if (data.ok) {
         setSubmitted(true);
         window.scrollTo(0, 0);
       } else {
-        setError(res.error ?? "Xəta baş verdi.");
+        setError(data.error ?? "Xəta baş verdi.");
       }
     } catch {
-      // e.g. stale page after a redeploy (server action id mismatch)
-      setError("Bağlantı xətası. Səhifəni yeniləyin (Cmd/Ctrl+Shift+R) və yenidən cəhd edin.");
+      setError("Bağlantı xətası. Yenidən cəhd edin.");
     } finally {
       setLoading(false);
     }
