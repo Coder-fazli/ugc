@@ -74,14 +74,20 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const fd = new FormData(e.currentTarget);
-    const res = await submitCreator(fd);
-    setLoading(false);
-    if (res.ok) {
-      setSubmitted(true);
-      window.scrollTo(0, 0);
-    } else {
-      setError(res.error ?? "Xəta baş verdi.");
+    try {
+      const fd = new FormData(e.currentTarget);
+      const res = await submitCreator(fd);
+      if (res.ok) {
+        setSubmitted(true);
+        window.scrollTo(0, 0);
+      } else {
+        setError(res.error ?? "Xəta baş verdi.");
+      }
+    } catch {
+      // e.g. stale page after a redeploy (server action id mismatch)
+      setError("Bağlantı xətası. Səhifəni yeniləyin (Cmd/Ctrl+Shift+R) və yenidən cəhd edin.");
+    } finally {
+      setLoading(false);
     }
   };
 
