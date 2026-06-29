@@ -68,8 +68,9 @@ select:invalid { color: #9a988f; }
 .ugc-soc-ig:hover { background: #b1e005; border-color: #b1e005; color: #000; }
 .ugc-soc-tt:hover { background: #f4e809; border-color: #f4e809; color: #000; }
 
-/* desktop home shows by default; the dedicated mobile home is hidden until ≤768px */
-.home-mobile { display: none; }
+/* desktop home shows by default; the dedicated mobile home is hidden until ≤768px.
+   !important is required because the block carries an inline display:flex. */
+.home-mobile { display: none !important; }
 
 @media (max-width: 768px) {
   .home-desktop { display: none !important; }
